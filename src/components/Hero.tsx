@@ -101,7 +101,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenContactModal }) => {
 
         {/* Eyebrow */}
         <div className="blur-in text-xs text-amber-400 font-mono tracking-[0.3em] uppercase mb-4 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 inline-block">
-          COLLECTION '26 • SENIOR WORDPRESS DEVELOPER
+          SENIOR WORDPRESS DEVELOPER
         </div>
 
         {/* Main Name */}

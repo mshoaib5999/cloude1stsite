@@ -59,8 +59,8 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
           <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
           PORTFOLIO // SHOAIB ASGHAR
         </div>
-        <div className="text-xs text-muted uppercase tracking-[0.2em]">
-          COLLECTION '26
+        <div className="text-xs text-muted uppercase tracking-[0.2em] font-mono">
+          PORTFOLIO 2026
         </div>
       </div>
 
