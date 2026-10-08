@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Muhammad Shoaib Asghar — Senior WordPress Developer Portfolio</title>
+  <meta name="description" content="Portfolio of Muhammad Shoaib Asghar, Senior WordPress Developer with 3.5+ years of experience delivering 400+ custom WordPress websites and WooCommerce stores." />
+
+  <!-- Google Fonts: Inter & Instrument Serif -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bg: "hsl(var(--bg))",
+            surface: "hsl(var(--surface))",
+            "surface-hover": "hsl(var(--surface-hover))",
+            "text-primary": "hsl(var(--text))",
+            muted: "hsl(var(--muted))",
+            stroke: "hsl(var(--stroke))",
+            accent: "hsl(var(--accent))",
+            amber: {
+              400: "#FBBF24",
+              500: "#F59E0B",
+              600: "#D97706",
+            }
+          },
+          fontFamily: {
+            body: ["Inter", "sans-serif"],
+            display: ["Instrument Serif", "serif"],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React 18 & ReactDOM CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  
+  <!-- Babel standalone for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Hls.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    :root {
+      --bg: 0 0% 4%;
+      --surface: 0 0% 8%;
+      --text: 0 0% 96%;
+      --muted: 0 0% 55%;
+      --stroke: 0 0% 14%;
+      --accent: 43 96% 53%;
+
+      --font-body: 'Inter', sans-serif;
+      --font-display: 'Instrument Serif', serif;
+    }
+
+    body {
+      background-color: hsl(var(--bg));
+      color: hsl(var(--text));
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: hsl(var(--bg));
+    }
+    ::-webkit-scrollbar-thumb {
+      background: hsl(var(--stroke));
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #F59E0B;
+    }
+
+    .accent-gradient {
+      background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 50%, #D97706 100%);
+      background-size: 200% 200%;
+    }
+
+    .accent-gradient-text {
+      background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 50%, #D97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @keyframes scroll-down {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(200%); }
+    }
+    .animate-scroll-down {
+      animation: scroll-down 1.5s ease-in-out infinite;
+    }
+
+    @keyframes role-fade-in {
+      0% { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-role-fade-in {
+      animation: role-fade-in 0.4s ease-out forwards;
+    }
+
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-gradient-shift {
+      animation: gradient-shift 6s ease infinite;
+    }
+
+    .halftone-overlay {
+      background-image: radial-gradient(circle, rgba(245, 158, 11, 0.15) 1px, transparent 1px);
+      background-size: 8px 8px;
+    }
+
+    .font-display {
+      font-family: 'Instrument Serif', serif;
+    }
+    .font-body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-bg text-text-primary antialiased selection:bg-amber-500 selection:text-bg">
+  
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // --- LoadingScreen ---
+    const LoadingScreen = ({ onComplete }) => {
+      const [count, setCount] = useState(0);
+      const [wordIndex, setWordIndex] = useState(0);
+      const [isFading, setIsFading] = useState(false);
+      const words = ["Design", "Create", "Optimize", "Scale"];
+
+      useEffect(() => {
+        const startTime = performance.now();
+        const duration = 2700;
+
+        const updateCounter = (currentTime) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const currentCount = Math.floor(progress * 100);
+          setCount(currentCount);
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+          } else {
+            setCount(100);
+            setTimeout(() => {
+              setIsFading(true);
+              setTimeout(onComplete, 400);
+            }, 100);
+          }
+        };
+
+        const animFrame = requestAnimationFrame(updateCounter);
+        return () => cancelAnimationFrame(animFrame);
+      }, [onComplete]);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setWordIndex((prev) => (prev + 1) % words.length);
+        }, 900);
+        return () => clearInterval(interval);
+      }, [words.length]);
+
+      return (
+        <div className={`fixed inset-0 z-[9999] bg-bg flex flex-col justify-between p-6 md:p-12 transition-opacity duration-500 ease-out ${isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+          <div className="flex justify-between items-center">
+            <div className="text-xs text-muted uppercase tracking-[0.3em] flex items-center gap-2 font-mono">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+              PORTFOLIO // SHOAIB ASGHAR
+            </div>
+            <div className="text-xs text-muted uppercase tracking-[0.2em] font-mono">
+              COLLECTION '26
+            </div>
+          </div>
+
+          <div className="my-auto text-center relative overflow-hidden h-24 sm:h-32 flex items-center justify-center">
+            {words.map((word, idx) => (
+              <div key={word} className={`absolute inset-0 flex items-center justify-center transition-all duration-500 transform ${idx === wordIndex ? 'opacity-100 translate-y-0 scale-100' : idx < wordIndex ? 'opacity-0 -translate-y-8 scale-95' : 'opacity-0 translate-y-8 scale-95'}`}>
+                <span className="text-4xl md:text-6xl lg:text-7xl font-display italic text-text-primary/90 tracking-tight">
+                  {word}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-between items-end">
+              <div className="text-xs text-muted tracking-widest uppercase font-mono">
+                SENIOR WORDPRESS DEVELOPER
+              </div>
+              <div className="text-6xl md:text-8xl lg:text-9xl font-display text-text-primary tabular-nums leading-none">
+                {String(count).padStart(3, "0")}
+              </div>
+            </div>
+
+            <div className="w-full h-[3px] bg-stroke/50 rounded-full overflow-hidden relative">
+              <div className="h-full accent-gradient transition-all duration-75 ease-out origin-left rounded-full" style={{ width: `${count}%`, boxShadow: '0 0 12px rgba(245, 158, 11, 0.5)' }} />
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // --- Navbar ---
+    const Navbar = ({ onOpenContactModal }) => {
+      const [isScrolled, setIsScrolled] = useState(false);
+      const [activeSection, setActiveSection] = useState('home');
+
+      useEffect(() => {
+        const handleScroll = () => {
+          setIsScrolled(window.scrollY > 100);
+          const sections = ['home', 'work', 'services', 'journal', 'experience', 'contact'];
+          const scrollPosition = window.scrollY + 200;
+
+          for (const section of sections) {
+            const el = document.getElementById(section);
+            if (el) {
+              const top = el.offsetTop;
+              const height = el.offsetHeight;
+              if (scrollPosition >= top && scrollPosition < top + height) {
+                setActiveSection(section);
+                break;
+              }
+            }
+          }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      const navItems = [
+        { label: 'Home', href: '#home', id: 'home' },
+        { label: 'Work', href: '#work', id: 'work' },
+        { label: 'Services', href: '#services', id: 'services' },
+        { label: 'Journal', href: '#journal', id: 'journal' },
+        { label: 'Experience', href: '#experience', id: 'experience' },
+      ];
+
+      return (
+        <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 md:pt-6 px-4 pointer-events-none">
+          <div className={`pointer-events-auto inline-flex items-center rounded-full backdrop-blur-md border border-white/10 bg-surface/90 px-2 py-2 transition-all duration-300 ${isScrolled ? 'shadow-lg shadow-black/40 border-amber-500/20 bg-surface/95 scale-[0.98]' : ''}`}>
+            <a href="#home" className="group relative flex items-center justify-center w-9 h-9 rounded-full bg-bg p-[1.5px] transition-transform duration-300 hover:scale-110" title="Shoaib Asghar">
+              <div className="absolute inset-0 rounded-full accent-gradient opacity-90 group-hover:rotate-180 transition-transform duration-700" />
+              <div className="relative w-full h-full rounded-full bg-bg flex items-center justify-center">
+                <span className="font-display italic text-[13px] font-bold text-text-primary group-hover:text-amber-400 transition-colors">SA</span>
+              </div>
+            </a>
+
+            <div className="w-px h-5 bg-stroke mx-2 hidden sm:block" />
+
+            <div className="flex items-center gap-1">
+              {navItems.map((item) => (
+                <a key={item.id} href={item.href} className={`text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition-all duration-200 ${activeSection === item.id ? 'text-text-primary bg-stroke/60 font-medium' : 'text-muted hover:text-text-primary hover:bg-stroke/40'}`}>
+                  {item.label}
+                </a>
+              ))}
+            </div>
+
+            <div className="w-px h-5 bg-stroke mx-2" />
+
+            <button onClick={onOpenContactModal} className="group relative inline-flex items-center justify-center text-xs sm:text-sm font-medium text-text-primary rounded-full px-3.5 sm:px-4 py-1.5 sm:py-2 overflow-hidden transition-all duration-300">
+              <span className="absolute inset-0 rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <span className="relative z-10 flex items-center gap-1.5 bg-surface group-hover:bg-bg rounded-full px-3 py-1 transition-colors border border-white/5">
+                <span>Say hi</span>
+                <span className="text-amber-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
+              </span>
+            </button>
+          </div>
+        </nav>
+      );
+    };
+
+    // --- Hero Section ---
+    const Hero = ({ onOpenContactModal }) => {
+      const videoRef = useRef(null);
+      const [roleIndex, setRoleIndex] = useState(0);
+      const roles = ["Senior WordPress Developer", "WooCommerce Architect", "Performance Engineer", "Fullstack Specialist"];
+      const hlsUrl = "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8";
+
+      useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+        let hls = null;
+
+        if (Hls.isSupported()) {
+          hls = new Hls({ enableWorker: true });
+          hls.loadSource(hlsUrl);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(() => {}));
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = hlsUrl;
+          video.addEventListener('loadedmetadata', () => video.play().catch(() => {}));
+        }
+
+        return () => { if (hls) hls.destroy(); };
+      }, [hlsUrl]);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setRoleIndex((prev) => (prev + 1) % roles.length);
+        }, 2000);
+        return () => clearInterval(interval);
+      }, [roles.length]);
+
+      return (
+        <section id="home" className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-bg pt-24 pb-16">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <video ref={videoRef} autoPlay muted loop playsInline className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2 opacity-35 filter brightness-90 contrast-125" />
+            <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+            <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-bg via-bg/80 to-transparent" />
+          </div>
+
+          <div className="relative z-10 max-w-5xl mx-auto px-6 text-center flex flex-col items-center">
+            
+            {/* Profile Avatar Card with Amber Code Glow */}
+            <div className="mb-6 relative group">
+              <div className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 opacity-80 blur-md group-hover:opacity-100 transition duration-500 animate-pulse" />
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-amber-500/60 shadow-2xl bg-surface">
+                <img src="./shoaib_profile.jpg" alt="Muhammad Shoaib Asghar" className="w-full h-full object-cover object-center transform group-hover:scale-105 transition duration-500" />
+              </div>
+              <div className="absolute -bottom-2 -right-2 bg-surface/90 border border-amber-500/40 backdrop-blur-md rounded-full px-2.5 py-0.5 flex items-center gap-1.5 shadow-lg">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                <span className="text-[10px] uppercase font-semibold text-text-primary tracking-wider font-mono">Available</span>
+              </div>
+            </div>
+
+            <div className="text-xs text-amber-400 font-mono tracking-[0.3em] uppercase mb-4 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 inline-block">
+              COLLECTION '26 • SENIOR WORDPRESS DEVELOPER
+            </div>
+
+            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display italic leading-[0.95] tracking-tight text-text-primary mb-6 drop-shadow-lg">
+              Muhammad Shoaib Asghar
+            </h1>
+
+            <div className="text-lg sm:text-xl md:text-2xl text-text-primary/90 font-light mb-6 flex items-center justify-center gap-2 flex-wrap min-h-[36px]">
+              <span>A</span>
+              <span key={roleIndex} className="font-display italic text-amber-400 text-2xl sm:text-3xl md:text-4xl animate-role-fade-in inline-block border-b border-amber-500/30 pb-0.5">
+                {roles[roleIndex]}
+              </span>
+              <span>based in Pakistan.</span>
+            </div>
+
+            <p className="text-sm md:text-base text-muted max-w-xl mb-10 leading-relaxed font-light">
+              Delivering 400+ custom WordPress projects, WooCommerce stores, and speed-optimized websites. Specializing in bespoke PHP theme development, ACF Pro data structures, and Core Web Vitals excellence.
+            </p>
+
+            <div className="inline-flex items-center gap-4 flex-wrap justify-center mb-16">
+              <a href="#work" className="group relative inline-flex items-center justify-center rounded-full text-sm font-medium px-8 py-3.5 bg-text-primary text-bg hover:bg-bg hover:text-text-primary transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <span className="absolute inset-0 rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-[1px]" />
+                <span className="flex items-center gap-2 font-mono">
+                  <span>See Works</span>
+                  <span className="transition-transform group-hover:translate-y-0.5">↓</span>
+                </span>
+              </a>
+
+              <button onClick={onOpenContactModal} className="group relative inline-flex items-center justify-center rounded-full text-sm font-medium px-8 py-3.5 border-2 border-stroke bg-bg text-text-primary hover:border-transparent transition-all duration-300 transform hover:scale-105">
+                <span className="absolute inset-0 rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+                <span className="flex items-center gap-2 font-mono">
+                  <span>Reach out...</span>
+                  <span className="text-amber-400 transition-transform group-hover:rotate-45">↗</span>
+                </span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-3xl pt-6 border-t border-stroke/50 text-left">
+              <div className="p-3 rounded-2xl bg-surface/40 border border-white/5 backdrop-blur-sm">
+                <div className="text-xs text-muted font-mono">Experience</div>
+                <div className="text-lg font-bold text-amber-400 font-display italic">3.5+ Years</div>
+              </div>
+              <div className="p-3 rounded-2xl bg-surface/40 border border-white/5 backdrop-blur-sm">
+                <div className="text-xs text-muted font-mono">Websites Delivered</div>
+                <div className="text-lg font-bold text-amber-400 font-display italic">400+ Projects</div>
+              </div>
+              <div className="p-3 rounded-2xl bg-surface/40 border border-white/5 backdrop-blur-sm">
+                <div className="text-xs text-muted font-mono">Performance</div>
+                <div className="text-lg font-bold text-amber-400 font-display italic">95+ PageSpeed</div>
+              </div>
+              <div className="p-3 rounded-2xl bg-surface/40 border border-white/5 backdrop-blur-sm">
+                <div className="text-xs text-muted font-mono">Core Focus</div>
+                <div className="text-lg font-bold text-amber-400 font-display italic">WP & WooCommerce</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 pointer-events-none">
+            <span className="text-[10px] text-muted uppercase tracking-[0.25em] font-mono">SCROLL</span>
+            <div className="w-px h-10 bg-stroke relative overflow-hidden">
+              <div className="w-full h-1/2 bg-amber-400 animate-scroll-down" />
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // --- Selected Works Bento Grid ---
+    const projectsData = [
+      {
+        id: 'rossai',
+        title: 'RossAi',
+        italicTitle: 'Deep-Tech & AI',
+        category: 'AI Technology & Sensors',
+        location: 'New Zealand',
+        url: 'https://rossai.co.nz',
+        description: 'Built a modern, brand-focused WordPress website for an AI & sensor technology company showcasing flagship products and company story.',
+        tags: ['WordPress', 'Custom Theme', 'AI Tech', 'Speed Optimized'],
+        colSpan: 'md:col-span-7',
+        metrics: 'PageSpeed 98/100',
+        image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop'
+      },
+      {
+        id: 'lumora',
+        title: 'Lumora Nutrition',
+        italicTitle: 'eCommerce Store',
+        category: 'Health & Wellness',
+        location: 'Global / USA',
+        url: 'https://trylumoradaily.com',
+        description: 'WooCommerce store for a wellness supplement brand featuring custom product pages, subscription flows, and integrated payment checkout.',
+        tags: ['WooCommerce', 'Stripe', 'Custom Checkout'],
+        colSpan: 'md:col-span-5',
+        metrics: '+140% Conversion',
+        image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=1000&auto=format&fit=crop'
+      },
+      {
+        id: 'aion-dubai',
+        title: 'AION Dubai',
+        italicTitle: 'Real Estate Investment',
+        category: 'Property Listings & Leads',
+        location: 'UAE / Netherlands',
+        url: 'https://aiondubai.com',
+        description: 'Bilingual (Dutch & English) real estate investment platform with dynamic property project listings and consultation booking.',
+        tags: ['WordPress', 'Bilingual', 'ACF Pro', 'Lead Capture'],
+        colSpan: 'md:col-span-5',
+        metrics: 'Bilingual Portal',
+        image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1000&auto=format&fit=crop'
+      },
+      {
+        id: 'flip-my-life',
+        title: 'Flip My Life',
+        italicTitle: 'Financial Advisory',
+        category: 'Wealth & Asset Management',
+        location: 'Canada',
+        url: 'https://flipmylife.com',
+        description: 'Professional wealth advisory website with interactive service calculators, case study showcases, and client portal integrations.',
+        tags: ['WordPress', 'Financial Portal', 'Custom Calculators'],
+        colSpan: 'md:col-span-7',
+        metrics: 'Client Portal',
+        image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1000&auto=format&fit=crop'
+      },
+      {
+        id: 'tampaccs',
+        title: 'Creative Contracting',
+        italicTitle: 'Engineering & Construction',
+        category: 'Home Services & Engineering',
+        location: 'USA',
+        url: 'https://tampaccs.com',
+        description: 'Multi-service contracting portal covering Engineering, Architecture, Build, and Elite Home Solutions with service location filters.',
+        tags: ['WordPress', 'Multi-Service', 'Elementor Pro'],
+        colSpan: 'md:col-span-6',
+        metrics: '4 Divisions',
+        image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1000&auto=format&fit=crop'
+      },
+      {
+        id: 'vice-pharma',
+        title: 'Vice Pharmaceuticals',
+        italicTitle: 'Research eCommerce',
+        category: 'eCommerce & Analytics',
+        location: 'USA',
+        url: 'https://vice-pharma.com',
+        description: 'High-security WooCommerce store featuring lab Certificate of Analysis (COA) downloads and affiliate integration.',
+        tags: ['WooCommerce', 'COA System', 'Security'],
+        colSpan: 'md:col-span-6',
+        metrics: 'COA Vault',
+        image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=1000&auto=format&fit=crop'
+      }
+    ];
+
+    const SelectedWorks = ({ onSelectProject }) => {
+      return (
+        <section id="work" className="bg-bg py-16 md:py-24 border-t border-stroke/40">
+          <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="w-8 h-px bg-amber-500" />
+                  <span className="text-xs text-amber-400 font-mono uppercase tracking-[0.3em]">Selected Work</span>
+                </div>
+                <h2 className="text-4xl md:text-6xl font-display text-text-primary tracking-tight">
+                  Featured <span className="italic font-display text-amber-400">projects</span>
+                </h2>
+                <p className="text-muted text-sm md:text-base max-w-lg mt-3 font-light">
+                  A selection of 400+ delivered projects across AI, eCommerce, Real Estate, and Financial Services.
+                </p>
+              </div>
+
+              <a href="#contact" className="hidden md:inline-flex items-center gap-2 text-xs font-mono text-text-primary bg-surface hover:bg-bg border border-stroke hover:border-amber-500/50 rounded-full px-6 py-3 transition-all group">
+                <span>View all 400+ works</span>
+                <span className="text-amber-400 group-hover:translate-x-1 transition-transform">↗</span>
+              </a>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
+              {projectsData.map((project) => (
+                <div key={project.id} onClick={() => onSelectProject(project)} className={`${project.colSpan} group relative bg-surface border border-stroke hover:border-amber-500/40 rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/10 min-h-[320px] flex flex-col justify-between`}>
+                  <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover object-center opacity-40 group-hover:scale-105 transition-transform duration-700 z-0 filter brightness-90" />
+                  <div className="absolute inset-0 halftone-overlay opacity-30 mix-blend-overlay pointer-events-none z-10" />
+
+                  <div className="relative z-20 p-6 flex justify-between items-start">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">
+                      {project.location}
+                    </span>
+                    <span className="text-xs text-text-primary/90 font-mono bg-bg/80 border border-white/10 backdrop-blur-md px-3 py-1 rounded-full">
+                      {project.metrics}
+                    </span>
+                  </div>
+
+                  <div className="relative z-20 p-6 mt-auto">
+                    <h3 className="text-2xl md:text-3xl font-display text-text-primary mb-2">
+                      {project.title} — <span className="italic font-display text-amber-400">{project.italicTitle}</span>
+                    </h3>
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="text-[11px] font-mono text-muted bg-bg/60 border border-stroke px-2.5 py-0.5 rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="absolute inset-0 bg-bg/85 backdrop-blur-md p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between z-30">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-amber-400 font-mono uppercase tracking-widest">{project.category}</span>
+                      <a href={project.url} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="text-xs font-mono text-text-primary bg-surface hover:bg-amber-500 hover:text-bg px-3.5 py-1.5 rounded-full border border-stroke transition-colors">Live Site ↗</a>
+                    </div>
+                    <div>
+                      <h4 className="text-2xl font-display text-text-primary mb-2">{project.title}</h4>
+                      <p className="text-xs md:text-sm text-muted leading-relaxed font-light">{project.description}</p>
+                    </div>
+                    <div className="inline-flex items-center gap-2 rounded-full p-[1px] accent-gradient shadow-lg self-start">
+                      <div className="bg-bg rounded-full px-5 py-2 flex items-center gap-2">
+                        <span className="text-xs font-semibold text-text-primary">View — <span className="font-display italic text-amber-400">{project.title}</span></span>
+                        <span className="text-amber-400">→</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // --- Services Section ---
+    const Services = () => {
+      const servicesList = [
+        { number: '01', title: 'Custom WordPress Theme Dev', italicWord: 'Tailored PHP & JS', description: 'Building custom WordPress themes from scratch using PHP, HTML5, SASS, and ES6+ JavaScript. Completely bloat-free and tailored precisely to your brand.', tools: ['PHP 8.x', 'Custom Gutenberg', 'Figma to WP', 'SASS/CSS3'] },
+        { number: '02', title: 'WooCommerce & Payments', italicWord: 'High Conversion', description: 'Architecting WooCommerce stores with custom product layout options, streamlined cart flows, automated checkout, Stripe/PayPal integration, and subscription systems.', tools: ['WooCommerce', 'Stripe API', 'PayPal', 'Custom Checkouts'] },
+        { number: '03', title: 'PageSpeed & Web Vitals', italicWord: '90-100 Scores', description: 'Eliminating render-blocking resources, database query bloat, asset minification, image WebP compression, and server caching to achieve green Core Web Vitals.', tools: ['Core Web Vitals', 'Lighthouse 100', 'Cache Setup', 'DB Cleanup'] },
+        { number: '04', title: 'ACF Pro & Custom Fields', italicWord: 'Scalable CMS', description: 'Designing intuitive WordPress admin backends using Advanced Custom Fields (ACF Pro) and Custom Post Types, empowering clients to manage content effortlessly.', tools: ['ACF Pro', 'CPT UI', 'REST API', 'Dynamic Schema'] }
+      ];
+
+      return (
+        <section id="services" className="bg-bg py-16 md:py-24 border-t border-stroke/40">
+          <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
+            <div className="mb-14">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="w-8 h-px bg-amber-500" />
+                <span className="text-xs text-amber-400 font-mono uppercase tracking-[0.3em]">Capabilities</span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-display text-text-primary tracking-tight">
+                Core <span className="italic font-display text-amber-400">expertise</span>
+              </h2>
+              <p className="text-muted text-sm md:text-base max-w-lg mt-3 font-light">
+                Specialized solutions developed over 3.5+ years of delivering high-performing web ecosystems.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {servicesList.map((service) => (
+                <div key={service.number} className="group bg-surface/50 border border-stroke hover:border-amber-500/50 rounded-3xl p-8 transition-all hover:bg-surface flex flex-col justify-between">
+                  <div>
+                    <div className="flex justify-between items-center mb-6">
+                      <span className="text-3xl font-display italic text-amber-400/60 group-hover:text-amber-400 transition-colors">{service.number}</span>
+                      <div className="w-8 h-8 rounded-full border border-stroke flex items-center justify-center group-hover:border-amber-500/50 group-hover:bg-amber-500/10 transition-colors">
+                        <span className="text-amber-400 group-hover:rotate-45 transition-transform">↗</span>
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-display text-text-primary mb-3">
+                      {service.title} — <span className="italic text-amber-400">{service.italicWord}</span>
+                    </h3>
+                    <p className="text-sm text-muted leading-relaxed mb-8 font-light">{service.description}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 pt-4 border-t border-stroke/50">
+                    {service.tools.map((tool) => (
+                      <span key={tool} className="text-[11px] font-mono text-text-primary/80 bg-bg border border-stroke px-3 py-1 rounded-full">{tool}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // --- Journal Section ---
+    const Journal = () => {
+      const journalEntries = [
+        { id: 1, title: "Optimizing Core Web Vitals for WooCommerce at Scale", italicWord: "Performance", date: "Aug 18, 2026", readTime: "5 min read", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=400&auto=format&fit=crop", category: "WooCommerce" },
+        { id: 2, title: "Headless WordPress vs Bespoke PHP Themes in 2026", italicWord: "Architecture", date: "Jul 29, 2026", readTime: "7 min read", image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=400&auto=format&fit=crop", category: "Development" },
+        { id: 3, title: "Mastering ACF Pro & Dynamic Gutenberg Block Schemas", italicWord: "CMS Flexibility", date: "Jun 14, 2026", readTime: "4 min read", image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=400&auto=format&fit=crop", category: "Gutenberg" },
+        { id: 4, title: "Hardening WordPress Security for Enterprise Clients", italicWord: "Security", date: "May 02, 2026", readTime: "6 min read", image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop", category: "Security" }
+      ];
+
+      return (
+        <section id="journal" className="bg-bg py-16 md:py-24 border-t border-stroke/40">
+          <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="w-8 h-px bg-amber-500" />
+                  <span className="text-xs text-amber-400 font-mono uppercase tracking-[0.3em]">Journal & Insights</span>
+                </div>
+                <h2 className="text-4xl md:text-6xl font-display text-text-primary tracking-tight">
+                  Recent <span className="italic font-display text-amber-400">thoughts</span>
+                </h2>
+                <p className="text-muted text-sm md:text-base max-w-lg mt-3 font-light">
+                  Articles and technical guides derived from 3.5+ years of hands-on WordPress development.
+                </p>
+              </div>
+
+              <a href="#contact" className="hidden md:inline-flex items-center gap-2 text-xs font-mono text-text-primary bg-surface hover:bg-bg border border-stroke hover:border-amber-500/50 rounded-full px-6 py-3 transition-all group">
+                <span>View all articles</span>
+                <span className="text-amber-400 group-hover:translate-x-1 transition-transform">↗</span>
+              </a>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              {journalEntries.map((entry) => (
+                <div key={entry.id} className="group flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 bg-surface/30 hover:bg-surface border border-stroke hover:border-amber-500/40 rounded-[32px] sm:rounded-full transition-all cursor-pointer">
+                  <div className="flex items-center gap-5 w-full sm:w-auto">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden flex-shrink-0 border border-stroke group-hover:border-amber-500/50 transition-colors">
+                      <img src={entry.image} alt={entry.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] font-mono text-amber-400 uppercase tracking-wider">{entry.category}</span>
+                      <h3 className="text-base sm:text-lg font-display text-text-primary group-hover:text-amber-400 transition-colors">
+                        {entry.title} — <span className="italic font-display text-text-primary/70">{entry.italicWord}</span>
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-6 text-xs text-muted font-mono w-full sm:w-auto justify-between sm:justify-end pl-2 sm:pl-0 border-t sm:border-t-0 border-stroke/50 pt-3 sm:pt-0">
+                    <span>{entry.date}</span>
+                    <span className="w-1 h-1 rounded-full bg-stroke" />
+                    <span>{entry.readTime}</span>
+                    <div className="w-8 h-8 rounded-full bg-bg border border-stroke flex items-center justify-center group-hover:border-amber-500/50 group-hover:bg-amber-500/10 transition-colors ml-2">
+                      <span className="text-amber-400 group-hover:translate-x-0.5 transition-transform">→</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // --- Experience Timeline Section ---
+    const ExperienceTimeline = () => {
+      const experiences = [
+        { role: "Senior WordPress Developer", company: "Upastra Digital Agency", location: "Okara, Pakistan", period: "Jan 2024 – Present", description: "Delivered 250+ custom WordPress websites across Real Estate, Healthcare, Construction, Plumbing, and AI businesses. Built bespoke PHP themes from scratch, optimized WooCommerce checkouts, integrated ACF Pro fields, and achieved top Core Web Vitals PageSpeed ratings.", skills: ["PHP", "WordPress CMS", "WooCommerce", "ACF Pro", "PageSpeed 100"] },
+        { role: "WordPress Developer", company: "M Tech Solutions", location: "Lahore, Pakistan", period: "Apr 2023 – Dec 2023", description: "Developed and maintained WordPress websites for clients across retail and service industries. Built custom WooCommerce stores, configured payment gateways, and performed on-page SEO optimization.", skills: ["WordPress", "WooCommerce", "Elementor Pro", "SEO", "cPanel"] },
+        { role: "Associate WordPress Developer", company: "DeDezigners Software House", location: "Lahore, Pakistan", period: "Nov 2022 – Apr 2023", description: "Customized WordPress themes and plugins for international clients. Converted Figma designs to responsive web pages using Elementor, HTML5, CSS3, and Bootstrap.", skills: ["Elementor", "HTML5/CSS3", "JavaScript", "Bootstrap"] }
+      ];
+
+      return (
+        <section id="experience" className="bg-bg py-16 md:py-24 border-t border-stroke/40">
+          <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
+            <div className="mb-14">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="w-8 h-px bg-amber-500" />
+                <span className="text-xs text-amber-400 font-mono uppercase tracking-[0.3em]">Career Track</span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-display text-text-primary tracking-tight">
+                Professional <span className="italic font-display text-amber-400">experience</span>
+              </h2>
+              <p className="text-muted text-sm md:text-base max-w-lg mt-3 font-light">
+                A history of growth, high-volume project execution, and technical mastery over 3.5+ years.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-8 relative before:absolute before:left-0 md:before:left-1/2 before:top-4 before:bottom-4 before:w-px before:bg-stroke">
+              {experiences.map((exp, idx) => (
+                <div key={exp.role} className={`relative flex flex-col md:flex-row items-start gap-8 ${idx % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                  <div className="absolute left-0 md:left-1/2 -translate-x-1/2 top-6 w-4 h-4 rounded-full bg-bg border-2 border-amber-400 z-10 shadow-lg shadow-amber-500/50" />
+                  <div className="w-full md:w-1/2 pl-8 md:pl-0 md:px-8">
+                    <div className="bg-surface/40 hover:bg-surface border border-stroke hover:border-amber-500/40 rounded-3xl p-6 sm:p-8 transition-all">
+                      <div className="flex flex-wrap justify-between items-start gap-2 mb-3">
+                        <span className="text-xs font-mono text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">{exp.period}</span>
+                        <span className="text-xs font-mono text-muted">{exp.location}</span>
+                      </div>
+                      <h3 className="text-2xl font-display text-text-primary mb-1">{exp.role}</h3>
+                      <div className="text-sm font-semibold text-text-primary/80 mb-4 font-mono">{exp.company}</div>
+                      <p className="text-xs sm:text-sm text-muted leading-relaxed mb-6 font-light">{exp.description}</p>
+                      <div className="flex flex-wrap gap-1.5 pt-4 border-t border-stroke/50">
+                        {exp.skills.map((skill) => (
+                          <span key={skill} className="text-[11px] font-mono text-text-primary/90 bg-bg border border-stroke px-2.5 py-0.5 rounded-full">{skill}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // --- Stats & Contact Footer ---
+    const ContactFooter = () => {
+      const videoRef = useRef(null);
+      const [copied, setCopied] = useState(false);
+      const hlsUrl = "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8";
+
+      useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+        let hls = null;
+
+        if (Hls.isSupported()) {
+          hls = new Hls({ enableWorker: true });
+          hls.loadSource(hlsUrl);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(() => {}));
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = hlsUrl;
+          video.addEventListener('loadedmetadata', () => video.play().catch(() => {}));
+        }
+
+        return () => { if (hls) hls.destroy(); };
+      }, [hlsUrl]);
+
+      const copyEmail = () => {
+        navigator.clipboard.writeText('shoaibasghar5999@gmail.com');
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      };
+
+      const marqueeText = "BUILDING HIGH PERFORMANCE WEBSITES • 400+ DELIVERED PROJECTS • CUSTOM WORDPRESS & WOOCOMMERCE • ";
+
+      return (
+        <footer id="contact" className="relative bg-bg pt-16 md:pt-24 pb-8 md:pb-12 overflow-hidden border-t border-stroke/40">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <video ref={videoRef} autoPlay muted loop playsInline className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2 opacity-25 scale-y-[-1] filter brightness-75 contrast-125" />
+            <div className="absolute inset-0 bg-black/75 backdrop-blur-[3px]" />
+          </div>
+
+          <div className="relative z-10">
+            <div className="w-full overflow-hidden whitespace-nowrap mb-16 py-4 bg-amber-500/10 border-y border-amber-500/20 backdrop-blur-md">
+              <div className="inline-flex animate-[gradient-shift_20s_linear_infinite] space-x-4">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <span key={i} className="text-xl sm:text-2xl font-display italic text-amber-400 font-semibold tracking-wider">
+                    {marqueeText}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="max-w-[1200px] mx-auto px-6 text-center flex flex-col items-center">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono mb-6">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                <span>LET'S BUILD SOMETHING EXTRAORDINARY</span>
+              </div>
+
+              <h2 className="text-4xl sm:text-6xl md:text-7xl font-display text-text-primary mb-6 tracking-tight max-w-3xl leading-[1.05]">
+                Have a project in mind? <br />
+                <span className="italic font-display text-amber-400">Let's connect.</span>
+              </h2>
+
+              <p className="text-muted text-sm sm:text-base max-w-xl mb-10 leading-relaxed font-light">
+                Whether you need a custom WordPress theme, high-converting WooCommerce store, page speed optimization, or fullstack development — I'm available for full-time and contract opportunities.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center gap-4 mb-16">
+                <a href="mailto:shoaibasghar5999@gmail.com" className="group relative inline-flex items-center justify-center rounded-full text-base sm:text-lg font-medium px-8 py-4 bg-text-primary text-bg hover:bg-bg hover:text-text-primary transition-all duration-300 transform hover:scale-105 shadow-xl shadow-amber-500/10">
+                  <span className="absolute inset-0 rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-[1px]" />
+                  <span className="flex items-center gap-3 font-mono">
+                    <span>shoaibasghar5999@gmail.com</span>
+                    <span className="text-amber-400 group-hover:translate-x-1 transition-transform">↗</span>
+                  </span>
+                </a>
+
+                <button onClick={copyEmail} className="inline-flex items-center gap-2 text-xs font-mono text-text-primary/80 bg-surface/80 hover:bg-surface border border-stroke hover:border-amber-500/40 rounded-full px-5 py-4 transition-all">
+                  <span>{copied ? '✓ Email Copied!' : '📋 Copy Address'}</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl mb-16 text-left">
+                <div className="p-5 rounded-2xl bg-surface/40 border border-white/5 backdrop-blur-md">
+                  <div className="text-xs font-mono text-muted mb-1">Direct Phone & WhatsApp</div>
+                  <a href="tel:+923106077900" className="text-sm font-semibold text-text-primary hover:text-amber-400 font-mono transition-colors">+92-310-6077900</a>
+                </div>
+                <div className="p-5 rounded-2xl bg-surface/40 border border-white/5 backdrop-blur-md">
+                  <div className="text-xs font-mono text-muted mb-1">Live Website</div>
+                  <a href="https://shoaibasghar.website" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-text-primary hover:text-amber-400 font-mono transition-colors">shoaibasghar.website ↗</a>
+                </div>
+                <div className="p-5 rounded-2xl bg-surface/40 border border-white/5 backdrop-blur-md">
+                  <div className="text-xs font-mono text-muted mb-1">Location</div>
+                  <div className="text-sm font-semibold text-text-primary font-mono">Okara / Lahore, Pakistan</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="max-w-[1200px] mx-auto px-6 pt-8 border-t border-stroke/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="flex items-center gap-4 text-xs font-mono text-muted">
+                <a href="https://www.linkedin.com/in/muhammad-shoaib-asghar-444b7120a" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">LinkedIn ↗</a>
+                <span>•</span>
+                <a href="https://shoaibasghar.website" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">Website ↗</a>
+                <span>•</span>
+                <a href="mailto:shoaibasghar5999@gmail.com" className="hover:text-amber-400">Email ↗</a>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs font-mono text-muted">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-text-primary font-medium">Available for projects</span>
+              </div>
+
+              <div className="text-xs font-mono text-muted">© 2026 Muhammad Shoaib Asghar</div>
+            </div>
+          </div>
+        </footer>
+      );
+    };
+
+    // --- Main App Component ---
+    const App = () => {
+      const [isLoading, setIsLoading] = useState(true);
+      const [selectedProject, setSelectedProject] = useState(null);
+
+      const scrollToContact = () => {
+        const el = document.getElementById('contact');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      return (
+        <div className="bg-bg min-h-screen text-text-primary font-body antialiased">
+          {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+          <Navbar onOpenContactModal={scrollToContact} />
+          <main>
+            <Hero onOpenContactModal={scrollToContact} />
+            <SelectedWorks onSelectProject={(p) => setSelectedProject(p)} />
+            <Services />
+            <Journal />
+            <ExperienceTimeline />
+          </main>
+          <ContactFooter onOpenModal={scrollToContact} />
+
+          {selectedProject && (
+            <div onClick={() => setSelectedProject(null)} className="fixed inset-0 z-[10000] bg-bg/90 backdrop-blur-xl flex items-center justify-center p-4 cursor-pointer">
+              <div onClick={(e) => e.stopPropagation()} className="relative max-w-3xl w-full bg-surface border border-amber-500/40 rounded-3xl overflow-hidden shadow-2xl p-6">
+                <button onClick={() => setSelectedProject(null)} className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-bg border border-stroke text-text-primary flex items-center justify-center">✕</button>
+                <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-64 object-cover rounded-2xl mb-4" />
+                <span className="text-xs font-mono uppercase text-amber-400">{selectedProject.category}</span>
+                <h3 className="text-3xl font-display text-text-primary my-2">{selectedProject.title} — <span className="italic text-amber-400">{selectedProject.italicTitle}</span></h3>
+                <p className="text-sm text-muted mb-4 font-light">{selectedProject.description}</p>
+                <a href={selectedProject.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-amber-500 text-bg text-sm font-semibold">Visit Live Website ↗</a>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Muhammad Shoaib Asghar — Senior WordPress Developer & Portfolio</title>
+  <meta name="description" content="Portfolio of Muhammad Shoaib Asghar, Senior WordPress Developer with 3.5+ years of experience delivering 400+ custom WordPress websites and WooCommerce stores." />
+
+  <!-- Google Fonts: Inter & Instrument Serif -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bg: "hsl(var(--bg))",
+            surface: "hsl(var(--surface))",
+            "surface-hover": "hsl(var(--surface-hover))",
+            "text-primary": "hsl(var(--text))",
+            muted: "hsl(var(--muted))",
+            stroke: "hsl(var(--stroke))",
+            accent: "hsl(var(--accent))",
+            amber: {
+              400: "#FBBF24",
+              500: "#F59E0B",
+              600: "#D97706",
+            }
+          },
+          fontFamily: {
+            body: ["Inter", "sans-serif"],
+            display: ["Instrument Serif", "serif"],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Hls.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    :root {
+      --bg: 0 0% 4%;
+      --surface: 0 0% 8%;
+      --text: 0 0% 96%;
+      --muted: 0 0% 55%;
+      --stroke: 0 0% 14%;
+      --accent: 43 96% 53%;
+
+      --font-body: 'Inter', sans-serif;
+      --font-display: 'Instrument Serif', serif;
+    }
+
+    body {
+      background-color: hsl(var(--bg));
+      color: hsl(var(--text));
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    .accent-gradient {
+      background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 50%, #D97706 100%);
+      background-size: 200% 200%;
+    }
+
+    .accent-gradient-text {
+      background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 50%, #D97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @keyframes scroll-down {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(200%); }
+    }
+    .animate-scroll-down {
+      animation: scroll-down 1.5s ease-in-out infinite;
+    }
+
+    @keyframes role-fade-in {
+      0% { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-role-fade-in {
+      animation: role-fade-in 0.4s ease-out forwards;
+    }
+
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-gradient-shift {
+      animation: gradient-shift 6s ease infinite;
+    }
+
+    .halftone-overlay {
+      background-image: radial-gradient(circle, rgba(245, 158, 11, 0.15) 1px, transparent 1px);
+      background-size: 8px 8px;
+    }
+
+    .font-display {
+      font-family: 'Instrument Serif', serif;
+    }
+    .font-body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-bg text-text-primary antialiased">
+  
+  <div id="root"></div>
+
+  <!-- Vite entry -->
+  <script type="module" src="/src/main.tsx"></script>
+
+</body>
+</html>
