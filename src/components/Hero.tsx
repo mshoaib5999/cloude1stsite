@@ -76,7 +76,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenContactModal }) => {
       </div>
 
       {/* Hero Content Container */}
-      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-[1700px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 text-center flex flex-col items-center">
         
         {/* Profile Avatar Card with Amber Code Glow */}
         <div className="mb-6 relative group">
@@ -157,7 +157,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenContactModal }) => {
         </div>
 
         {/* Quick Highlights Badge */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-3xl pt-6 border-t border-stroke/50 text-left">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-6xl pt-6 border-t border-stroke/50 text-left">
           <div className="p-3 rounded-2xl bg-surface/40 border border-white/5 backdrop-blur-sm">
             <div className="text-xs text-muted">Experience</div>
             <div className="text-lg font-bold text-amber-400 font-display italic">3.5+ Years</div>

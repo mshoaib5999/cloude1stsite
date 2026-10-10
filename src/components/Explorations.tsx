@@ -87,7 +87,7 @@ export const Explorations: React.FC = () => {
       </div>
 
       {/* Parallax Cards Grid Layer */}
-      <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-20">
+      <div className="w-full max-w-[1700px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-20">
         
         {/* Left Column */}
         <div className="flex flex-col gap-8 md:gap-12 md:-translate-y-6">

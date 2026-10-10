@@ -42,7 +42,7 @@ export const Journal: React.FC = () => {
 
   return (
     <section id="journal" className="bg-bg py-16 md:py-24 border-t border-stroke/40">
-      <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
+      <div className="w-full max-w-[1700px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">

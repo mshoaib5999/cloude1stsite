@@ -24,7 +24,7 @@ export const Stats: React.FC = () => {
 
   return (
     <section className="bg-bg py-16 md:py-24 border-t border-stroke/40">
-      <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
+      <div className="w-full max-w-[1700px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {statsList.map((stat, i) => (
             <div

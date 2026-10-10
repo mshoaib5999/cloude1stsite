@@ -75,7 +75,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenModal }) => 
         </div>
 
         {/* Main CTA Section */}
-        <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 text-center flex flex-col items-center">
+        <div className="w-full max-w-[1700px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 text-center flex flex-col items-center">
           
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono mb-6">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
@@ -141,7 +141,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenModal }) => 
         </div>
 
         {/* Footer Bottom Bar */}
-        <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 pt-8 border-t border-stroke/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="w-full max-w-[1700px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 pt-8 border-t border-stroke/50 flex flex-col sm:flex-row justify-between items-center gap-4">
           
           {/* Social Links */}
           <div className="flex items-center gap-4 text-xs font-mono text-muted">

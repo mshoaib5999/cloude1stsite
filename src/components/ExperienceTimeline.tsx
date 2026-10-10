@@ -30,7 +30,7 @@ export const ExperienceTimeline: React.FC = () => {
 
   return (
     <section id="experience" className="bg-bg py-16 md:py-24 border-t border-stroke/40">
-      <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
+      <div className="w-full max-w-[1700px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24">
         
         {/* Section Header */}
         <div className="mb-14">
