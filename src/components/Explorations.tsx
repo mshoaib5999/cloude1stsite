@@ -22,11 +22,13 @@ export const Explorations: React.FC = () => {
     },
     {
       id: 3,
-      title: "WooCommerce Checkout Redesign",
-      category: "UX & Payments",
-      image: "https://images.unsplash.com/photo-1556742049-0a67f572c994?q=80&w=600&auto=format&fit=crop",
+      title: "PhaseLink Engineering",
+      category: "Engineering & Power Systems",
+      image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=800&auto=format&fit=crop",
       rotation: "rotate-3",
-      col: "left"
+      col: "left",
+      url: "https://phaselinkeng.com/",
+      description: "WordPress engineering corporate website for PhaseLink Engineering, Inc. featuring custom service architecture, speed optimization, and responsive consulting workflows."
     },
     {
       id: 4,
@@ -171,8 +173,19 @@ export const Explorations: React.FC = () => {
               {activeLightbox.title}
             </h3>
             <p className="text-xs text-muted leading-relaxed">
-              Exploration preview for custom theme widgets, design tokens, and optimized asset pipelines built specifically for WordPress client projects.
+              {activeLightbox.description || "Exploration preview for custom theme widgets, design tokens, and optimized asset pipelines built specifically for WordPress client projects."}
             </p>
+            {activeLightbox.url && (
+              <a
+                href={activeLightbox.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 mt-4 px-6 py-2.5 rounded-full bg-amber-500 hover:bg-amber-400 text-bg text-xs font-semibold font-mono transition-colors"
+              >
+                <span>Visit Live Site</span>
+                <span>↗</span>
+              </a>
+            )}
           </div>
         </div>
       )}
